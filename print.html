@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>打印设置</title>
+<style type="text/css">
+	.wrapper{
+		width:750px;
+		margin:0 auto;
+	}
+	.header p{
+		font-size:16px;
+		line-height:1.4;
+		padding:15px;
+	}
+	.header p::first-letter{
+		font-size:24px;
+		font-style:italic;
+	}
+	.button a{
+		display:block;
+		width:92%;
+		height:40px;
+		text-align: center;
+		line-height:40px;
+		background:#f75b5c;
+		color:#fff;
+		border-radius:5px;
+		margin:15px auto;
+	}
+	
+	
+</style>
+</head>
+
+
+<body>
+<div class="wrapper">
+	<OBJECT id="windowPrint" width="0" height="0" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>
+	
+	<!--startprint1-->
+	<div class="header">
+		<p>Git 是用于 Linux内核开发的版本控制工具。与常用的版本控制工具 CVS, Subversion 等不同，它采用了分布式版本库的方式，不必服务器端软件支持（wingeddevil注：这得分是用什么样的服务端，使用http协议或者git协议等不太一样。并且在push和pull的时候和服务器端还是有交互的。），使源代码的发布和交流极其方便。 Git 的速度很快，这对于诸如 Linux kernel 这样的大项目来说自然很重要。 Git 最为出色的是它的合并跟踪（merge tracing）能力。</p>
+		<p>实际上内核开发团队决定开始开发和使用 Git 来作为内核开发的版本控制系统的时候，世界开源社群的反对声音不少，最大的理由是 Git 太艰涩难懂，从 Git 的内部工作机制来说，的确是这样。但是随着开发的深入，Git 的正常使用都由一些友好的脚本命令来执行，使 Git 变得非常好用，即使是用来管理我们自己的开发项目，Git 都是一个友好，有力的工具。现在，越来越多的著名项目采用 Git 来管理项目开发。</p>
+		<p>尽管 git 是一个正式项目发布系统，它却可以方便地将你的项目建立在松散的开发人员组织形式上。 Linux内核的开发，就是按这样的模式进行的。在 Randy Dunlap 的著作中（"Merge to Mainline" 第17页）就有很好的介绍。</p>
+		<p>需要强调的是正真的非常规的开发组织形式， git 这种组织形式，意味着对于工作流程的约束，没有任何强迫性的原则。你不必从唯一一个远程版本库中导入（工作目录）。</p>
+	</div>
+	<!--endprint1-->
+	
+	<div class="button">
+		<a onclick="printInitSetting()" href="javascript:;">校对打印设置</a>
+		<a onclick="printSetting()" href="javascript:;">页面设置</a>
+		<a onclick="printPreview()" href="javascript:;">打印预览</a>
+		<a onclick="printPage(1)" href="javascript:;">打印</a>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	function printPage(oper){
+		if(oper < 10){
+			var bdhtml = window.document.body.innerHTML;
+			var sprnstr = "<!--startprint" + oper + "-->";
+			var eprnstr = "<!--endprint" + oper + "-->";
+			var prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + sprnstr.length);
+			prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+			window.document.body.innerHTML = prnhtml;
+			window.print();
+			window.document.body.innerHTML = bdhtml;
+		}else{
+			window.print();
+		}
+	}
+	
+	/*
+	 * http://www.ljjyw.com/datas/wen/print_htm.htm
+	 * 
+	 * windowPrint.execwb(6, 1)   打印
+	 * windowPrint.execwb(6, 6)   直接打印
+	 * windowPrint.execwb(10, 1)  属性
+	 * windowPrint.execwb(17, 1)  全选
+	 * windowPrint.execwb(22, 1)  刷新
+	 * 
+	 *  &w		网页标题
+		&u		网页地址 (URL)
+		&d		短日期格式（由“控制面板”中的“区域设置”指定）
+		&D		长日期格式（由“控制面板”中的“区域设置”指定）
+		&t		由“控制面板”中的“区域设置”指定的时间格式
+		&T		24 小时时间格式
+		&p		当前页码
+		&P		总页数
+		&b		文本右对齐（请把要右对齐的文字放在“&b”之后）
+		&b&b	文字居中（请把要居中的文字放在“&b”和“&b” 之间）
+		&&		单个 & 号 (&)
+	 * 
+	 */
+	function printInitSetting(){
+		if(window.ActiveXObject || "ActiveXObject" in window){
+			try{
+				var hkey_root = "HKEY_CURRENT_USER",
+					hkey_path = "\\Software\\Microsoft\\Internet Explorer\\PageSetup\\",
+					hkey_key;
+				var RegWsh = new ActiveXObject("WScript.Shell");
+				hkey_key = "header";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+				hkey_key = "footer";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "&b&p/&P");
+				hkey_key = "font";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+				hkey_key = "margin_left";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "0.750000");
+				hkey_key = "margin_top";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "0.750000");
+				hkey_key = "margin_right";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "0.750000");
+				hkey_key = "margin_bottom";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "0.750000");
+				hkey_key = "Print_BAckground";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "yes");
+				hkey_key = "Shrink_To_Fit";
+				RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "yes");
+				alert("校对完成！");
+			}catch(e){
+				alert("不允许ActiveX控件运行！");
+			}
+		}else{
+			alert("请在IE浏览器中打开！");
+		}
+	}
+	function printSetting(){
+		try{
+			windowPrint.execwb(8, 1);
+		}catch(e){}
+	}
+	function printPreview(){
+		try{
+			windowPrint.execwb(7, 1);
+		}catch(e){}
+	}
+	
+	
+	
+	function IEVersion(){
+		var userAgent = window.navigator.userAgent;
+		var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;//判断IE < 11浏览器
+		var isEdge = userAgent.indexOf("Edge") > -1 && !isIE;//判断IE的Edge浏览器
+		var isIE11 = userAgent.indexOf("Trident") > -1 && userAgent.indexOf("rv:11.0") > -1;
+		if(isIE){
+			var reIE = /MSIE (\d+).(\d+);/;
+			var fIEVersion = userAgent.match(reIE)[1];
+			if(fIEVersion == 7){
+				return 7;
+			}else if(fIEVersion == 8){
+				return 8;
+			}else if(fIEVersion == 9){
+				return 9;
+			}else if(fIEVersion == 10){
+				return 10;
+			}else{
+				return 6;
+			}
+		}else if(isEdge){
+			return "Edge";
+		}else if(isIE11){
+			return 11;
+		}else{
+			return -1;
+		}
+	}
+	
+	
+</script>
+</body>
+</html>
+
